@@ -1,0 +1,294 @@
+body {
+    background-color: rgb(245, 245, 245);
+    font-family: 'Arial', sans-serif;
+    /* line-height: 1.6; */
+}
+
+h1 {
+    font-size: 24px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+div, p {
+    font-size: 18px;
+}
+
+ul {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+/* Conteneur principal */
+#main-container {
+    margin: 0 auto; /* Centre horizontalement */
+    margin-left: calc(5% + 250px); /* Ajuste la marge gauche en fonction de la largeur de la sidebar */
+    margin-right: 5%; /* Assure un espace symétrique à droite */
+    transition: margin-left 0.3s ease, margin-right 0.3s ease;
+}
+
+#main-container.collapsed {
+    margin-left: calc(5% + 50px); /* Ajuste la marge gauche pour la sidebar rétractée */
+    margin-right: 5%; /* Maintient l'espacement symétrique à droite */
+}
+
+
+#graph-selector, #graph-selector-num {
+    width: 130%; /* Ajustez selon vos besoins */
+    max-width: 400px; /* Limite la largeur maximale */
+    margin: 10px 0; /* Espace autour */
+    padding: 5px; /* Espace interne */
+    font-size: 16px; /* Taille de la police */
+    text-align: left; /* Assure un alignement du texte */
+    border: 1px solid #ccc; /* Standardise la bordure */
+    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur */
+    background-color: #fff; /* Assure une couleur de fond uniforme */
+}
+
+/* select {
+    appearance: none; /* Supprime les styles par défaut du navigateur 
+    -webkit-appearance: none; /* Compatibilité Safari 
+    -moz-appearance: none; /* Compatibilité Firefox 
+} */
+
+/* Conteneur pour les vues */
+.container {
+    border-radius: 20px;
+    max-width: 100%;
+}
+
+.container-title {
+    border-radius: 20px;
+    width: 100%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    box-sizing: border-box;
+    overflow-x: hidden; /* Empêche le débordement horizontal */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-bottom: 15px; 
+    margin-top: 15px
+}
+
+.title {
+    font-size: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 22px;
+}
+
+.subcontainer {
+    border-radius: 20px;
+    width: 100%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-x: hidden; /* Empêche le débordement horizontal */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.text-container {
+    width: 100%; /* Occupe toute la largeur disponible */
+    text-align: left; /* Aligne le texte à gauche */
+}
+
+.text-container div {
+    margin: 10px 0;
+}
+
+.subcontainer div, p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Graphiques 
+ .graph-container, .graph-container-num {
+    width: 100%;
+    max-width: 1200px; /* Limite maximale pour éviter l'étirement 
+    margin: 0 auto;
+} 
+*/
+
+/* .graph-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+    margin-left: 90px;
+}
+
+
+.graph-container-num, .heatmap-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+}
+ */
+.graph, .graph-num {
+    display: none; /* Masquer tous les graphiques par défaut */
+}
+
+.graph.active, .graph-num.active {
+    display: block; /* Afficher uniquement le graphique actif */
+}
+
+/* Tableau */
+.table-container {
+    width: 100%;
+    max-width: 900px; /* Limite maximale pour éviter l'étirement */
+    margin: 0 auto;
+    overflow-x: auto; /* Défilement horizontal si nécessaire */
+}
+
+/* select {
+    margin: 20px auto;
+    padding: 10px;
+    font-size: 16px;
+    display: block;
+} */
+
+.styled-table {
+    width: 100%; /* Le tableau s'ajuste à la largeur du conteneur */
+    border-collapse: collapse;
+    font-size: 16px; /* Réduit la taille de la police si nécessaire */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    margin: 20px 0; /* Espace au-dessus et au-dessous du tableau */
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 10px; /* Réduit la marge interne pour rendre le tableau plus compact */
+    text-align: center;
+}
+
+.styled-table thead tr {
+    background-color:rgb(2, 166, 128);
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.graph-container > div, .graph-container-num > div {
+    width: 100%;
+    height: 430px;
+}
+
+.long-graph-container > div {
+    width: 100%;
+    height: 500px;
+}
+
+/* .heatmap-container {
+    width: 90%; /* Largeur relative à la largeur de la page 
+    max-width: 1200px; /* Limite maximale pour éviter un agrandissement excessif 
+    height: 1000px; /* Hauteur fixe du graphique 
+    margin: 0 auto; /* Centre le graphique horizontalement 
+    padding: 10px; /* Espacement autour du graphique 
+    box-sizing: border-box; /* Inclut le padding dans les dimensions totales 
+}
+
+.heatmap-container > div {
+    width: 100%; /* Prend toute la largeur du conteneur parent 
+    height: 100%; /* Prend toute la hauteur du conteneur parent 
+} */
+
+.nav-links {
+    list-style-type: none;
+    padding: 0;
+}
+
+.nav-links li {
+    margin-bottom: 10px;
+}
+
+.nav-link {
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    color: #333;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background-color: #e0e0e0;
+    color: #000;
+}
+
+.view {
+    display: none;
+}
+
+.view.active {
+    display: block;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+label {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+}
+
+input, select {
+    padding: 10px;
+    font-size: 16px;
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    width: 200px;
+    text-align: center;
+}
+
+/* Conteneur principal pour les entrées */
+.user-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Colonnes adaptatives */
+    gap: 15px; /* Espace entre les éléments */
+    width: 100%; /* Prend toute la largeur disponible */
+    max-width: 1200px; /* Largeur maximale pour limiter l'étirement */
+    margin: 0 auto; /* Centré horizontalement */
+    padding: 20px; /* Espacement interne */
+    box-sizing: border-box; /* Inclut le padding dans les dimensions */
+}
+
+/* Churn probability et barre de progression */
+.churn-output {
+    text-align: center;
+    margin-top: 30px;
+    width: 100%;
+}
+
+/* Barre de progression */
+.progress-container {
+    width: 100%; /* Largeur de la barre */
+    max-width: 500px; /* Limite maximale pour éviter un étirement excessif */
+    height: 20px; /* Hauteur de la barre */
+    background-color: #e0e0e0; /* Couleur de fond */
+    border-radius: 10px; /* Coins arrondis */
+    overflow: hidden; /* Empêche le débordement */
+}
+
+.progress-bar {
+    height: 100%; /* Remplit la hauteur du conteneur */
+    background-color: green; /* Couleur initiale */
+    width: 0%; /* Remplit progressivement en fonction de la probabilité */
+    transition: width 0.3s ease, background-color 0.3s ease; /* Transition douce */
+}

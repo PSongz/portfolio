@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div id="home" class="banner-area section-padding">
+        <!-- <div class="bg-overlay black"></div> -->
+        <div class="welcome-text">
+                <div class="name-area wow fadeInDown" data-wow-delay="0.2s">Hi! I am Pierre</div>
+                <div class="name-area2 wow fadeInDown" data-wow-delay="0.4s"> Welcome to my personal website where I share my projects and thoughts related to data science </div>
+            <a href="#about" class="my-btn-1 wow fadeInDown" data-wow-delay="0.6s">Learn more</a>
+            <a href="#contact" class="my-btn-2 wow fadeInDown" data-wow-delay="0.8s">Get in touch</a>
+        </div>
+    </div>
+
+    {#    About section#}
+
+    <div id="about" class="about-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 col-sn-8 col-xs-12 wow fadeInLeft" data-wow-delay="0.2s">
+                    <div class="about-left">
+                        <h2 class="section-title">About Me</h2>          
+                        <div class="line"></div>
+                        <h4>{{ about.short_description }}</h4>
+                        <!-- <p>{{ about.description }}</p> -->
+                        <p>I specialize in streamlining business processes through automation, creating end-to-end data pipelines that cover everything from data collection and storage to visualization and machine learning.</p>
+                        <p>I worked in the private equity sector for 2 years, leveraging advanced data visualization and forecasting techniques to support investment decisions. This allowed me to work with diverse datasets spanning various industries.</p>
+                        <p>Later, I joined the finance department at EDF, where I managed hundreds of gigabytes of consumption and pricing data. My role focused on automating, securing, and optimizing processes such as generating financial reports, preparing budgets, and backtesting risk management strategies.</p>
+                        <p>Driven by my passion for data analytics, I’ve also worked on personal projects, which you can explore in the 'Recent Work' section.</p>
+                        <a href="static/files/pierre_ntohsong_resume.pdf" download>Download Resume&nbsp;<i class="fa fa-download"></i></a>
+                    </div> 
+                </div>
+                <div class="col-md-5 visible-md visible-lg wow fadeInDown" data-wow-delay="0.6s">
+                    <div class="profile">
+                        <img src="{{ about.image.url }}" alt="Profile image" class="img-responsive">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    Services Section#}
+    <div id="services" class="grey-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-header text-center">
+                        <h2>Expertise</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="service-row">
+                {% for service in services %}
+
+                    <div class="col-md-4 col-sm-4">
+                        <div class="single-service wow fadeInDown" data-wow-delay="0.2s">
+                            <a class="view img" href="{{ service.icon.url }}">
+                                <img src="{{ service.icon.url }}" alt="service image">
+                            </a>
+                            <!-- <i class="glyphicon glyphicon-gift"></i> -->
+                            <h2>{{ service.name }}</h2>
+                           {% comment %}  <p>{{ service.description }}</p> {% endcomment %}
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    {#    Recent Works Section     #}
+
+    <div id="portfolio" class="portfolio-area section-padding">
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-header">
+                        <h2>My Recent Works</h2>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="row">
+                {% for work in works %}
+                    <div class="col-md-4 col-sm-4 col-xs-12 no-padding">
+                        <div class="gallery-items"
+                        data-id="{{ work.id }}" 
+                        data-title="{{ work.title }}"
+                        data-description="{{ work.description }}"  
+                        data-image="{{ work.image.url }}"
+                        data-project_url = "{{ work.project_url }}">
+                            <div class="img">
+                                <img src="{{ work.image.url }}" alt="{{ work.title }}">
+                            </div>    
+                            <div class="gallery-text">
+                                <h2>{{ work.title }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Popup HTML -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <img id="popup-image" src="" alt="Project Image">
+            <h2 id="popup-title">Project Title</h2>
+            <p id="popup-description">Short description of the project.</p>
+            <div class="popup-buttons">
+                <a id="popup-url" href="#">
+                    <button onclick="viewData()">View Data</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {# Reviews Section #}
+
+    <div id="reviews" class="grey-area section-padding">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-header">
+                            <h2>Client Reviews</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <div class="reviews-container">
+
+            <div id="reviews-wrapper">
+
+                <div class="review">
+                    <img src="{{ client.image }}" alt="Client photo">
+                    <div class="review-content">
+                        <p>{{ client.description }}</p>
+                        <p class="client-name">{{ client.name }}</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="navigation">
+                <button id="prev">&#8249;</button>
+                <button id="next">&#8250;</button>
+            </div>
+
+        </div>
+
+    </div> 
+
+    <script>
+        const reviews = [
+            {% for client in clients %}
+            {
+                image: "{{ client.image.url }}",
+                description: "{{ client.description|escapejs }}",
+                name: "{{ client.name|escapejs }}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+    
+        const reviewsWrapper = document.getElementById('reviews-wrapper');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        let currentIndex = 0;
+    
+        function updateReview(index) {
+            reviewsWrapper.innerHTML = `
+                <div class="review">
+                    <img src="${reviews[index].image}" alt="Client photo">
+                    <div class="review-content">
+                        <p>${reviews[index].description}</p>
+                        <p class="client-name">${reviews[index].name}</p>
+                    </div>
+                </div>
+            `;
+        }
+    
+        function showNextReview() {
+            currentIndex = (currentIndex + 1) % reviews.length;
+            updateReview(currentIndex);
+        }
+    
+        function showPrevReview() {
+            currentIndex = (currentIndex - 1 + reviews.length) % reviews.length;
+            updateReview(currentIndex);
+        }
+    
+        prevButton.addEventListener('click', showPrevReview);
+        nextButton.addEventListener('click', showNextReview);
+    
+        // Auto-slide functionality
+        setInterval(showNextReview, 5000); // Change review every 5 seconds
+    
+        // Initialize with the first review
+        updateReview(currentIndex);
+    </script>
+
+    {#    Recent Works Section ends #}
+
+    {#    Contact section#}
+
+    <div id="contact" class="contact-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-header text-center">
+                        <h2>Contact Me</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 box-contact-form">
+
+                    <form id="contact-form" method="post" action="#">
+
+                        <div class="messages"></div>
+
+                        <div class="controls">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group wow fadeInDown" data-wow-delay="0.2s">
+                                        <input id="form_name" type="text" name="name" class="form-control"
+                                               placeholder="Enter your full name *" required="required"
+                                               data-error="Fullname is required.">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group wow fadeInDown" data-wow-delay="0.4s">
+                                        <input id="form_email" type="email" name="email" class="form-control"
+                                               placeholder="Enter your email *" required="required"
+                                               data-error="Valid email is required.">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group wow fadeInUp" data-wow-delay="0.6s">
+                                        <textarea id="form_message" name="message" class="form-control"
+                                                  placeholder="Your Message *" rows="4" required="required"
+                                                  data-error="Leave a message for me"></textarea>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn btn-send" value="">Send message</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

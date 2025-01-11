@@ -1,0 +1,258 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bankchurn</title>
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cr_style.css' %}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token }}">
+</head>
+
+    <body>
+
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar" style="background-color:rgb(15, 150, 116)">
+            <div class="sidebar-header">
+                <button id="toggle-btn">❮</button> <!-- Bouton pour rétracter/déployer -->
+            </div>
+            <div class="sidebar-content">
+                <div class="sidebar-link-container">
+                    <a href="{% url 'home' %}" class="sidebar-link">Home</a> <!-- Lien vers la page d'accueil -->
+                </div>   
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-view="view1">Overview</a></li>
+                <li><a href="#" class="nav-link" data-view="view2">Churn prediction tool</a></li>
+            </ul>
+
+        </div>
+        
+        <div id="view1" class="view active">
+
+            <div class="container" id="main-container">
+
+                <div class="container-title">
+                    <div class='title'>Churn prediction</div>
+                    <div class='subtitle'>Use case on a bank's client database</div>
+                </div> 
+
+                <div class="subcontainer">
+
+                    <div class="text-container">
+
+                        <div>
+                            The aim of this project is to perform an exploratory analysis of a bank's client database and to create a high-performance churn prediction tool.
+                        </div>
+            
+                        <div>
+                            This project is divided into the following parts:
+                            <ul>
+                                <li>Data acquisition and analysis:
+                                    <ul>
+                                        <li>Descriptive analysis of the dataset</li>
+                                        <li>Distribution of numerical variables</li>
+                                        <li>Distribution of categorical variables</li>
+                                        <li>Collinearity</li>
+                                    </ul>
+                                </li>
+                                <li>Model building for churn prediction and performance evaluation</li>
+                                <li>Tool development to estimate a client's probability of leaving the bank</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <h1>Dataset overview</h1>
+
+                    <div>
+                        The dataset contains 14 variables, including 11 numerical and 3 categorical. Irrelevant columns such as <strong>Id</strong>, <strong>CustomerId</strong>, and <strong>Surname</strong> were dropped. No missing values or significant outliers were detected.
+                    </div>
+
+                    <div class="table-container">
+                        {{ table|safe }}
+                    </div>
+
+                    <h1>Categorical variables</h1>
+
+                    <div>Categorical variables, such as <strong>HasCreditCard</strong>, <strong>IsActiveMember</strong>, <strong>NumberOfProducts</strong>, and <strong>Tenure</strong>, were encoded for analysis.</div>
+        
+                    <div>
+                        <select id="graph-selector">
+                            <option value="Country">Country</option>
+                            <option value="Gender">Gender</option>
+                            <option value="HasCreditCard">Has a credit card</option>
+                            <option value="IsActiveMember">Is an active member</option>
+                            <option value="NumberOfProducts">Number of products</option>
+                            <option value="Tenure">Tenure</option>
+                        </select>
+                    </div>
+        
+                    <div class="graph-container">
+                        {% for name, graph in cr_plots.items %}
+                        <div class="graph" id="{{ name|slugify }}">
+                            {{ graph|safe }}
+                        </div>
+                        {% endfor %}
+                    </div>
+        
+                    <h1>Numerical Variables</h1>
+                    <div>
+                        <select id="graph-selector-num">
+                            <option value="EstimatedSalary">Estimated salary</option>
+                            <option value="Balance">Balance</option>
+                            <option value="Age">Age</option>
+                            <option value="CreditScore">Credit Score</option>
+                        </select>
+                    </div>
+        
+                    <div class="graph-container-num">
+                        {% for name, graph in cr_plots_continuous.items %}
+                        <div class="graph-num" id="{{ name|slugify }}">
+                            {{ graph|safe }}
+                        </div>
+                        {% endfor %}
+                    </div>
+        
+                    <h2>Correlation Matrix</h2>
+
+                    <div class="text-container">A search for correlated variables has to be conducted before building a model since it could lower it's efficiency.
+                    Here none of the variables were correlated.</div>
+
+
+                    <div class="long-graph-container">
+                        {{ cr_plots_charts.heatmap|safe }}
+                    </div>
+                
+
+                    <h1>Development of the model</h1>
+
+                    <div class="text-container">
+
+                        <div>The development of the model involved the different steps:
+                            <ul>
+                                <li>Feature engineering</li>
+                                <li>Fitting of different models on a subset of the data. The most effective model was XGBoost </li>
+                                <li>Fine-tuned our XGboost model using 5 fold cross validation and ended with the follwowing parameters:
+                                    <ul>
+                                        <li>Number of estimators: 281</li>
+                                        <li>Maximum depth: 4</li>
+                                        <li>Minimum child weight: 2</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            
+                        </div>
+
+                        <div>After submission this model was ranked in the top 15% on the leaderboard.</div>
+
+                    </div>
+
+                    <h1>Feature importance</h1>
+
+                    <div class="long-graph-container">
+                        {{ cr_plots_charts.featureimportance|safe }}
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+        <div id="view2" class="view">
+
+            <div class="container" id="main-container">
+
+                <div class="container-title">
+                    <div class='title'>Churn prediction tool</div>
+                </div> 
+
+                <div class="subcontainer">
+
+                    <!-- Conteneur pour les paramètres utilisateur -->
+                    <div class="user-inputs">
+                        <!-- Entrées numériques -->
+                        <div class="input-container">
+                            <label for="es-input">Estimated salary:</label>
+                            <input type="number" id="es-input" name="es-input" value="50000" oninput="sendData()" />
+                        </div>
+                        <div class="input-container">
+                            <label for="bal-input">Balance:</label>
+                            <input type="number" id="bal-input" name="bal-input" value="50000" oninput="sendData()" />
+                        </div>
+                        <div class="input-container">
+                            <label for="cs-input">Credit score:</label>
+                            <input type="number" id="cs-input" name="cs-input" value="200" oninput="sendData()" />
+                        </div>
+                        <div class="input-container">
+                            <label for="age-input">Age:</label>
+                            <input type="number" id="age-input" name="age-input" value="50" oninput="sendData()" />
+                        </div>
+                        <div class="input-container">
+                            <label for="ten-input">Tenure:</label>
+                            <input type="number" id="ten-input" name="ten-input" value="5" oninput="sendData()" />
+                        </div>
+                        <div class="input-container">
+                            <label for="nb-input">Number of products:</label>
+                            <input type="number" id="nb-input" name="nb-input" value="3" oninput="sendData()" />
+                        </div>
+                
+                        <!-- Selecteurs Oui/Non -->
+                        <div class="input-container">
+                            <label for="cc-selector">Has a credit card:</label>
+                            <select id="cc-selector" name="cc-selector" onchange="sendData()">
+                                <option value="Yes" selected>Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="input-container">
+                            <label for="am-selector">Is an active member:</label>
+                            <select id="am-selector" name="am-selector" onchange="sendData()">
+                                <option value="Yes" selected>Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <div class="input-container">
+                            <label for="geo-selector">Country:</label>
+                            <select id="geo-selector" name="geo-selector" onchange="sendData()">
+                                <option value="France" selected>France</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Spain">Spain</option>
+                            </select>
+                        </div>
+                        <div class="input-container">
+                            <label for="gen-selector">Gender:</label>
+                            <select id="gen-selector" name="gen-selector" onchange="sendData()">
+                                <option value="Male" selected>Man</option>
+                                <option value="Female">Woman</option>
+                            </select>
+                        </div>
+                    </div>
+                
+                    <!-- Churn probability et barre de progression -->
+                    <div class="churn-output">
+
+                        <h1 id='churn-rate-value'>
+                            Churn probability: <span id="churn-rate">0%</span>
+                        </h1>
+
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+
+                </div>
+
+            </div> 
+
+        </div>
+
+        <script src="{% static 'js/sidebar.js' %}"></script>
+        <script src="{% static 'js/cr_graphselector.js' %}"></script>
+        <script src="{% static 'js/cr_graphselector_num.js' %}"></script>
+        <script src="{% static 'js/cr_viewselector.js' %}"></script>
+        <script src="{% static 'js/cr_getdata.js' %}"></script>
+        <script src="{% static 'js/cr_progressbar.js' %}"></script>
+    </body>
+</html>   

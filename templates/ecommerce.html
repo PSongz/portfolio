@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        .container { display: flex; flex-wrap: wrap; gap: 20px; }
+        .chart { width: 48%; }
+        .table-container { margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <div class="container">
+        <div class="chart">{{ plots.breakdown_chart|safe }}</div>
+        <div class="chart">{{ plots.map_chart|safe }}</div>
+        <div class="chart">{{ plots.revenue_chart|safe }}</div>
+        <div class="chart">{{ plots.time_series_chart|safe }}</div>
+    </div>
+
+    <div class="table-container">
+        <h2>Tableau des données</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pays</th>
+                    <th>Revenus (€)</th>
+                    <th>Visites</th>
+                    <th>Conversion Rate</th>
+                    <th>AOV (€)</th>
+                    <th>Bounce Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table %}
+                <tr>
+                    <td>{{ row.country }}</td>
+                    <td>{{ row.revenue }}</td>
+                    <td>{{ row.visits }}</td>
+                    <td>{{ row.conversion_rate }}</td>
+                    <td>{{ row.aov }}</td>
+                    <td>{{ row.bounce_rate }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

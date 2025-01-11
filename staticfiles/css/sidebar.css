@@ -1,0 +1,76 @@
+/*--------------- Sidebar area starts -------------*/
+
+.sidebar {
+    width: 250px; /* Largeur déployée */
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color:rgb(23, 29, 86);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    transition: width 0.3s ease; /* Transition pour déployer/rétracter */
+    overflow: hidden;
+    border-top-right-radius: 30px; /* Coins arrondis en haut à droite */
+    border-bottom-right-radius: 30px; /* Coins arrondis en bas à droite */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar.collapsed {
+    width: 50px; /* Largeur rétractée */
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+#toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+}
+
+/* Masquer le contenu de la sidebar lorsqu'elle est rétractée */
+.sidebar.collapsed .sidebar-content {
+    opacity: 0; /* Rendre le contenu invisible */
+    pointer-events: none; /* Désactiver les interactions */
+}
+
+.sidebar-link-container {
+    width: 100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.sidebar-link {
+    color: black;
+    background:rgb(245, 245, 245);
+    border-radius: 25px;
+    text-decoration: none;
+    margin: 10px 0;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+/* .sidebar-link:hover {
+    text-decoration: underline;
+} */
+        
+
+
+/*--------------- Sidebar area ends -------------*/
