@@ -322,7 +322,7 @@ def process_input(request):
         X = X.set_index('parameter').T.astype(float)
         print(f"X : {X}")
         
-        proba_churn = round(model.predict_proba(X)[:, 1][0] * 100, 2)
+        proba_churn = str(round(model.predict_proba(X)[:, 1][0] * 100, 2))
         
         # Traitement des données
         print(f"proba churn : {proba_churn}")
