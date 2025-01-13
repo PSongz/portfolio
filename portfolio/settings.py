@@ -21,6 +21,8 @@ load_dotenv()  # Load environment variables from a .env file
 #Env.read_env()
 
 ENVIRONNMENT = os.getenv("ENVIRONNMENT")
+print(f"WAAAAAAAAAAAAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ENVIRONNMENT: {os.getenv('ENVIRONNMENT')}")
+
 #ENVIRONNMENT = env('ENVIRONNMENT', default='production')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
