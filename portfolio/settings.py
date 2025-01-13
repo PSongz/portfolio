@@ -40,7 +40,7 @@ if ENVIRONNMENT == 'development':
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pierrentohsong.up.railway.app']
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
