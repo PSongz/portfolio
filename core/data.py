@@ -44,7 +44,7 @@ time_series = {
 }
 
 # Map JSON
-with open('C:\\Users\\pierr\\django_projects\\portfolio\\Europe_countries_shp_custom.json', 'r', encoding='utf-8') as f:
+with open(r'js\Europe_countries_shp_custom.json', 'r', encoding='utf-8') as f:
     geojson_data = json.load(f)
 
 for k in range(len(geojson_data['features'])):
@@ -52,12 +52,12 @@ for k in range(len(geojson_data['features'])):
 
 
 ########## Data for the Bank Churn rate project ############
-cr_data = pd.read_csv(r"C:\Users\pierr\django_projects\portfolio\static\data\train.csv")
+cr_data = pd.read_csv(r"data\train.csv")
 cr_cat_variables = ['Geography', 'Gender', 'HasCrCard', 'IsActiveMember', 'NumOfProducts', 'Tenure']
 cr_data_describe = pd.concat([cr_data.describe(include='all'), cr_data.isnull().sum(axis=0).to_frame(name="missing_values").T], axis=0).round(2).drop(index=['unique', 'top', 'freq'])
 cr_data = cr_data.drop(columns=['Surname', 'CustomerId', 'id'])
 
-with open(r"C:\Users\pierr\django_projects\portfolio\static\models\bank_churnrate_xgboost.pkl", 'rb') as file:  
+with open(r"models\bank_churnrate_xgboost.pkl", 'rb') as file:  
     model = pickle.load(file)
 
 # Extraire les importances des features
