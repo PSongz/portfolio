@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn portfolio.wsgi
+web: SECRET_KEY=$SECRET_KEY gunicorn portfolio.wsgi:application --bind 0.0.0.0:$PORT
