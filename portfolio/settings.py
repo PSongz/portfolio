@@ -36,7 +36,7 @@ else:
     DEBUG = True
 
 ALLOWED_HOSTS = [
-    "https://pierrentohsong.up.railway.app"
+    "pierrentohsong.up.railway.app"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
