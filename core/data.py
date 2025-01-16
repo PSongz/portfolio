@@ -65,7 +65,12 @@ for k in range(len(geojson_data['features'])):
 
 
 ########## Data for the Bank Churn rate project ############
-cr_data = pd.read_csv(find("data/train.csv"))
+with engine.connect() as connection:
+
+    query = text("select * from banck_churn_train;")
+    
+    cr_data = pd.read_sql_query(query, con=connection)
+
 cr_cat_variables = ['Geography', 'Gender', 'HasCrCard', 'IsActiveMember', 'NumOfProducts', 'Tenure']
 cr_data_describe = pd.concat([cr_data.describe(include='all'), cr_data.isnull().sum(axis=0).to_frame(name="missing_values").T], axis=0).round(2).drop(index=['unique', 'top', 'freq'])
 cr_data = cr_data.drop(columns=['Surname', 'CustomerId', 'id'])
