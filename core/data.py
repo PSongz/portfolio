@@ -6,6 +6,13 @@ import pickle
 import xgboost as xgbl
 from django.contrib.staticfiles.finders import find
 import os
+import pymysql
+from sqlalchemy import create_engine, text
+import environ
+
+# Envirionment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Function replace
 register = template.Library()
@@ -17,19 +24,24 @@ def replace(value, arg):
 
 ########## Data for the Ecommerce project ############
 
-# Simulated data
-data = {
-    "country": ["United Kingdom", "Switzerland", "Ukraine", "France", "Germany", "Netherlands"],
-    "ISO3": ['GBR', 'CHE', 'UKR', 'FRA', 'DEU', 'NLD'],
-    "revenue": [164634, 54632, 44122, 33525, 26152, 25905],
-    "visits": [37393, 4427, 5577, 15832, 19980, 11453],
-    "conversion_rate": [0.04, 0.2, 0.07, 0.03, 0.03, 0.03],
-    "aov": [10290, 670, 11531, 6659, 3269, 8635],
-    "bounce_rate": [61, 56, 67, 60, 62, 58],
-}
+# Get data from database
+mysql_user = env('DB_USER')
+mysql_password = env('DB_PASSWORD')
+mysql_host = env('DB_HOST')
+mysql_db = env('DB_NAME')
+mysql_port = env('DB_PORT')
 
-# Storing data in DF
-df = pd.DataFrame(data)
+engine = create_engine('postgresql+psycopg2://' + mysql_user + ':' + mysql_password + '@' + mysql_host + ':' + mysql_port + '/' + mysql_db)
+
+try:
+    with engine.connect() as connection:
+
+        query = text("select * from test_data_dashboard;")
+        
+        df = pd.read_sql_query(query, con=connection)
+        
+except Exception as e:
+    print(f"Error collecting data from database : {e}")
 
 # Revenue data
 revenue_by_category = {

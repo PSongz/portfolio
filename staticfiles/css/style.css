@@ -57,7 +57,7 @@ a {
 }
 
 a:hover {
-    color: #FF7E60;
+    color: #1905f5;
     text-decoration: none;
     transition: all 0.25s ease 0s;
     -moz-transition: all 0.25s ease 0s;
@@ -250,7 +250,7 @@ h6 {
 .navbar-custom .navbar-brand .navbar-toggle {
     padding: 4px 6px;
     font-size: 16px;
-    color: #fff;
+    color: #1503e3;
 }
 
 .navbar-custom .navbar-brand .navbar-toggle:focus,
@@ -272,7 +272,7 @@ h6 {
 
 .navbar-custom .nav li a:hover {
     outline: 0;
-    color: rgba(255, 255, 255, .8);
+    color: rgba(21, 7, 217, 0.8);
     background-color: transparent;
 }
 
@@ -303,14 +303,14 @@ h6 {
         box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
     }
     .navbar-custom.top-nav-collapse .nav li a {
-        color: #fff;
+        color: #0f03f8;
     }
     .navbar-custom.top-nav-collapse .nav li.active a {
         background-color: transparent;
         color: #160d8e !important;
     }
     .navbar-custom.top-nav-collapse .navbar-brand {
-        color: #fff;
+        color: #1a06f4;
     }
 }
 
