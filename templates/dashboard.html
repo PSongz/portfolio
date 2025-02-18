@@ -6,123 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
-    <style>
-        /* Corps de la page */
-        body {
-            background-color:rgb(245, 245, 245);
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Conteneur principal */
-        #main-container {
-            margin-left: 250px; /* Aligné avec la largeur de la sidebar déployée */
-            transition: margin-left 0.3s ease;
-        }
-        
-        #main-container.collapsed {
-            margin-left: 50px; /* Aligné avec la largeur de la sidebar rétractée */
-        }
-
-
-        /* Conteneur principal : grille */
-        .container {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr); /* 12 colonnes */
-            grid-template-rows: repeat(12, minmax(50px, 1fr)); /* 12 lignes avec des hauteurs minimales */
-            row-gap: 30px; /* Espacement entre les éléments */
-            column-gap: 15px;
-            height: 100vh; /* Adapte à la hauteur de l'écran */
-            padding: 10px;
-            box-sizing: border-box;
-        }
-
-        /* Section des métriques */
-        .metrics {
-            grid-column: 1 / 13; /* Colonne 1 à 12 */
-            grid-row: 1 / 3; /* Ligne 1 à 2 */
-            display: flex;
-            justify-content: center;
-            align-items: center; /* Centre les éléments verticalement */
-            padding: 10px;
-            background-color: white;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 30px;
-        }
-
-        .metric {
-            text-align: center;
-            flex: 1; /* Taille égale pour chaque métrique */
-            justify-content: center;
-        }
-
-        .metric-content {
-            display: flex; /* Aligne les éléments en ligne (icône + texte) */
-            align-items: center; /* Centre les éléments verticalement */
-            gap: 10px; /* Espace entre l'icône et le texte */
-            justify-content: center;
-        }
-        
-        .metric-icon {
-            width: 40px; /* Largeur de l'icône */
-            height: 40px; /* Hauteur de l'icône */
-            object-fit: contain; /* S'assure que l'image conserve ses proportions */
-        }
-
-        /* Graphiques et carte */
-        .map {
-            grid-column: 7 / 13; /* Colonne 7 à 12 */
-            grid-row: 3 / 9; /* Ligne 3 à 8 */
-        }
-
-        .chart1 {
-            grid-column: 1 / 4; /* Colonne 1 à 3 */
-            grid-row: 3 / 6; /* Ligne 3 à 4 */
-        }
-
-        .chart2 {
-            grid-column: 4 / 7; /* Colonne 4 à 6 */
-            grid-row: 3 / 6; /* Ligne 3 à 4 */
-        }
-
-        .chart3 {
-            grid-column: 1 / 4; /* Colonne 1 à 3 */
-            grid-row: 6 / 9; /* Ligne 6 à 7 */
-        }
-
-        .chart4 {
-            grid-column: 4 / 7; /* Colonne 4 à 6 */
-            grid-row: 6 / 9; /* Ligne 6 à 7 */
-        }
-
-        .timeseries {
-            grid-column: 1 / 13; /* Colonne 1 à 12 */
-            grid-row: 9 / 13; /* Ligne 9 à 12 */
-        }
-
-        /* Style des graphiques */
-        .chart, .map {
-            background-color: white;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            border-radius: 5px;
-            overflow: hidden; /* Empêche le débordement */
-        }
-
-        .chart {
-            height: 100%; /* Laisse Plotly s'ajuster à la hauteur définie par le conteneur */
-            position: relative; /* Nécessaire pour un rendu dynamique */
-        }
-        .chart > div {
-            position: absolute; /* Permet à Plotly de se redimensionner */
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 <body>
 
@@ -136,69 +20,108 @@
                 <a href="{% url 'home' %}" class="sidebar-link">Home</a> <!-- Lien vers la page d'accueil -->
             </div>
         </div>
+        <ul class="nav-links">
+            <li><a href="#" class="nav-link active" data-view="view1">Project description</a></li>
+            <li><a href="#" class="nav-link" data-view="view2">Dashboard</a></li>
+        </ul>
     </div>
 
-    <!-- Conteneur principal -->
-    <div class="container" id="main-container">
-        <!-- Bandeau des métriques -->
-        <div class="metrics">
-            <div class="metric">
-                <div class="metric-content">
-                    <img src="{% static 'icons/visitors_icon.png' %}" alt="Visitors Icon" class="metric-icon">
-                    <div>
-                        <h3>Total Visitors</h3>
-                        <p>{{ metrics.total_visitors }}</p>
-                    </div>
+    <div id="view1" class="view active">
+        <div class="container-ov" id="main-container-ov">
+
+            <div class="container-title-ov">
+                <div class='title-ov'>Project Overview: E-Commerce Data Analytics</div>
+                {% comment %} <div class='subtitle'>Use case on a bank's client database</div> {% endcomment %}
+            </div> 
+
+            <div class="subcontainer-ov">
+
+                <div class="text-container-ov">
+                    Data analytics is crucial to the success of e-commerce platforms, 
+                    as it allows stakeholders to understand customer behaviors, 
+                    leading to improvements in product offerings, UI design, and marketing strategies.
                 </div>
-            </div>
-            <div class="metric">
-                <div class="metric-content">
-                    <img src="{% static 'icons/revenue_icon.png' %}" alt="Revenue Icon" class="metric-icon">
-                    <div>
-                        <h3>Total Revenue</h3>
-                        <p>{{ metrics.total_revenue }}</p>
-                    </div>
+                <div class="text-container-ov">
+                    This project focused on extracting raw data from an e-commerce platform and transforming 
+                    it into a meaningful dashboard that highlights key performance metrics.
                 </div>
-            </div>
-            <div class="metric">
-                <div class="metric-content">
-                    <img src="{% static 'icons/cr_icon.png' %}" alt="Conversion Rate Icon" class="metric-icon">
-                    <div>
-                        <h3>Conversion Rate</h3>
-                        <p>{{ metrics.conversion_rate }}</p>
-                    </div>
+                <div class="text-container-ov">
+                    The dataset was sourced from the Google Merchandise Store and contains over 1.7M transactions. 
+                    The first challenge involved collecting, cleaning, and formatting the data before storing it in a database.
                 </div>
-            </div>
-            <div class="metric">
-                <div class="metric-content">
-                    <img src="{% static 'icons/aov_icon.png' %}" alt="Order Value Icon" class="metric-icon">
-                    <div>
-                        <h3>Average Order Value</h3>
-                        <p>{{ metrics.average_order_value }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="metric">
-                <div class="metric-content">
-                    <img src="{% static 'icons/br_icon.png' %}" alt="Bounce Rate Icon" class="metric-icon">
-                    <div>
-                        <h3>Bounce Rate</h3>
-                        <p>{{ metrics.bounce_rate }}</p>
-                    </div>
+                <div class="text-container-ov">
+                    Key metrics such as average order value, total revenue, number of visitors, bounce rate, and conversion rate were calculated. These insights,
+                     along with customer and product segmentations, are available in the "Dashboard" section.
                 </div>
             </div>
         </div>
+    </div>
+    
+    <div id="view2" class="view">
+
+        <!-- Conteneur principal -->
+        <div class="container" id="main-container">
+            <!-- Bandeau des métriques -->
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-content">
+                        <img src="{% static 'icons/visitors_icon.png' %}" alt="Visitors Icon" class="metric-icon">
+                        <div>
+                            <h3>Total Visitors</h3>
+                            <p>{{ metrics.total_visitors }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-content">
+                        <img src="{% static 'icons/revenue_icon.png' %}" alt="Revenue Icon" class="metric-icon">
+                        <div>
+                            <h3>Total Revenue</h3>
+                            <p>{{ metrics.total_revenue }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-content">
+                        <img src="{% static 'icons/cr_icon.png' %}" alt="Conversion Rate Icon" class="metric-icon">
+                        <div>
+                            <h3>Conversion Rate</h3>
+                            <p>{{ metrics.conversion_rate }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-content">
+                        <img src="{% static 'icons/aov_icon.png' %}" alt="Order Value Icon" class="metric-icon">
+                        <div>
+                            <h3>Average Order Value</h3>
+                            <p>{{ metrics.average_order_value }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="metric">
+                    <div class="metric-content">
+                        <img src="{% static 'icons/br_icon.png' %}" alt="Bounce Rate Icon" class="metric-icon">
+                        <div>
+                            <h3>Bounce Rate</h3>
+                            <p>{{ metrics.bounce_rate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
-        <!-- Graphiques -->
-        <div class="chart chart1">{{ plots.breakdown_chart|safe }}</div>
-        <div class="chart chart2">{{ plots.client_type_chart|safe }}</div>
-        <div class="chart chart3">{{ plots.revenue_price_chart|safe }}</div>
-        <div class="chart chart4">{{ plots.revenue_client_chart|safe }}</div>
-        <div class="chart timeseries">{{ plots.time_series_chart|safe }}</div>
-        <div class="chart map">{{ plots.map_chart|safe }}</div>
+            <!-- Graphiques -->
+            <div class="chart chart1">{{ plots.breakdown_chart|safe }}</div>
+            <div class="chart chart2">{{ plots.client_type_chart|safe }}</div>
+            <div class="chart chart3">{{ plots.revenue_price_chart|safe }}</div>
+            <div class="chart chart4">{{ plots.revenue_client_chart|safe }}</div>
+            <div class="chart timeseries">{{ plots.time_series_chart|safe }}</div>
+            <div class="chart map">{{ plots.map_chart|safe }}</div>
 
+        </div>
     </div>
     <script src="{% static 'js/sidebar.js' %}"></script>
+    <script src="{% static 'js/dashboard_viewselector.js' %}"></script>
 </body>
 </html>

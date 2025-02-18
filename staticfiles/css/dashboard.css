@@ -1,0 +1,114 @@
+/* Corps de la page */
+body {
+    background-color:rgb(245, 245, 245);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Conteneur principal */
+#main-container {
+    margin-left: 250px; /* Aligné avec la largeur de la sidebar déployée */
+    transition: margin-left 0.3s ease;
+}
+
+#main-container.collapsed {
+    margin-left: 50px; /* Aligné avec la largeur de la sidebar rétractée */
+}
+
+
+/* Conteneur principal : grille */
+.container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr); /* 12 colonnes */
+    grid-template-rows: repeat(12, minmax(50px, 1fr)); /* 12 lignes avec des hauteurs minimales */
+    row-gap: 30px; /* Espacement entre les éléments */
+    column-gap: 15px;
+    height: 100vh; /* Adapte à la hauteur de l'écran */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Section des métriques */
+.metrics {
+    grid-column: 1 / 13; /* Colonne 1 à 12 */
+    grid-row: 1 / 3; /* Ligne 1 à 2 */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centre les éléments verticalement */
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+}
+
+.metric {
+    text-align: center;
+    flex: 1; /* Taille égale pour chaque métrique */
+    justify-content: center;
+}
+
+.metric-content {
+    display: flex; /* Aligne les éléments en ligne (icône + texte) */
+    align-items: center; /* Centre les éléments verticalement */
+    gap: 10px; /* Espace entre l'icône et le texte */
+    justify-content: center;
+}
+
+.metric-icon {
+    width: 40px; /* Largeur de l'icône */
+    height: 40px; /* Hauteur de l'icône */
+    object-fit: contain; /* S'assure que l'image conserve ses proportions */
+}
+
+/* Graphiques et carte */
+.map {
+    grid-column: 7 / 13; /* Colonne 7 à 12 */
+    grid-row: 3 / 9; /* Ligne 3 à 8 */
+}
+
+.chart1 {
+    grid-column: 1 / 4; /* Colonne 1 à 3 */
+    grid-row: 3 / 6; /* Ligne 3 à 4 */
+}
+
+.chart2 {
+    grid-column: 4 / 7; /* Colonne 4 à 6 */
+    grid-row: 3 / 6; /* Ligne 3 à 4 */
+}
+
+.chart3 {
+    grid-column: 1 / 4; /* Colonne 1 à 3 */
+    grid-row: 6 / 9; /* Ligne 6 à 7 */
+}
+
+.chart4 {
+    grid-column: 4 / 7; /* Colonne 4 à 6 */
+    grid-row: 6 / 9; /* Ligne 6 à 7 */
+}
+
+.timeseries {
+    grid-column: 1 / 13; /* Colonne 1 à 12 */
+    grid-row: 9 / 13; /* Ligne 9 à 12 */
+}
+
+/* Style des graphiques */
+.chart, .map {
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    overflow: hidden; /* Empêche le débordement */
+}
+
+.chart {
+    height: 100%; /* Laisse Plotly s'ajuster à la hauteur définie par le conteneur */
+    position: relative; /* Nécessaire pour un rendu dynamique */
+}
+.chart > div {
+    position: absolute; /* Permet à Plotly de se redimensionner */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}

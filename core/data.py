@@ -36,25 +36,27 @@ engine = create_engine('postgresql+psycopg2://' + mysql_user + ':' + mysql_passw
 try:
     with engine.connect() as connection:
 
-        query = text("select * from test_data_dashboard;")
+        query_metrics = text("select * from dashboard_metrics;")
+        query_category = text("select * from dashboard_price_category;")
+        query_isnew = text("select * from dashboard_isnew;")
+        query_date = text("select * from dashboard_date;")
+        query_country = text("select * from dashboard_country;")
         
-        df = pd.read_sql_query(query, con=connection)
+        metrics = pd.read_sql_query(query_metrics, con=connection)
+        revenue_by_price_category = pd.read_sql_query(query_category, con=connection)
+        revenue_by_isnew = pd.read_sql_query(query_isnew, con=connection)
+        revenue_by_date = pd.read_sql_query(query_date, con=connection)
+        revenue_by_country = pd.read_sql_query(query_country, con=connection)
         
 except Exception as e:
     print(f"Error collecting data from database : {e}")
 
-# Revenue data
-revenue_by_category = {
-    "<10 000€": 16.46,
-    "<1000€": 16.46,
-    "<5000€": 54.43,
-    ">20 000€": 12.66,
-}
-
-time_series = {
-    "dates": ["sept. 2016", "nov. 2016", "janv. 2017", "mars 2017", "mai 2017", "juil. 2017"],
-    "revenue": [0, 50000, 70000, 40000, 60000, 100000],
-}
+revenue_by_price_category = revenue_by_price_category[revenue_by_price_category['revenue'] != 0]
+revenue_by_price_category['revenue'] = revenue_by_price_category['revenue'].round().astype(int)
+revenue_by_isnew['revenue'] = revenue_by_isnew['revenue'].round().astype(int)
+revenue_by_isnew['category'] = np.where(revenue_by_isnew['isnew'] == 0, 'New', 'Returning')
+revenue_by_date['revenue'] = revenue_by_date['revenue'].round().astype(int)
+revenue_by_country['revenue'] = revenue_by_country['revenue'].round().astype(int)
 
 # Map JSON
 with open(find('js/Europe_countries_shp_custom.json'), 'r', encoding='utf-8') as f:

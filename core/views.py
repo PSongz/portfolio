@@ -11,7 +11,7 @@ import seaborn as sns
 sns.set_theme()
 from plotly.offline import plot
 import matplotlib.pyplot as plt
-from .data import df, revenue_by_category, time_series, geojson_data, cr_data, cr_cat_variables, cr_data_describe, importance_df, model
+from .data import revenue_by_price_category, revenue_by_isnew, revenue_by_country, revenue_by_date, metrics, geojson_data, cr_data, cr_cat_variables, cr_data_describe, importance_df, model
 from .models import *
 from io import BytesIO
 import base64
@@ -334,27 +334,22 @@ def process_input(request):
         
 def dashboard_view(request):
     # Données des métriques
-    metrics = {
-        "total_visitors": 198311,
-        "total_revenue": "476 874 €",
-        "conversion_rate": "0.04%",
-        "average_order_value": "6 036€",
-        "bounce_rate": "62%",
+    metrics_v2 = {
+        "total_visitors": format(int(metrics[metrics['metric'] == 'total_visitors']['value'][0]), ",").replace(",", " "),
+        "total_revenue": str(format(int(metrics[metrics['metric'] == 'total_revenue']['value'][1]), ",").replace(",", " ")) + "€",
+        "conversion_rate": str(round(metrics[metrics['metric'] == 'conversion_rate']['value'][3] * 100, 2)) + "%",
+        "average_order_value": str(format(int(metrics[metrics['metric'] == 'average_order_value']['value'][4]), ",").replace(",", " ")) + "€",
+        "bounce_rate": str(int(metrics[metrics['metric'] == 'bounce_rate']['value'][5] * 100)) + "%",
     }
 
-    # Données pour les graphiques
-    revenue_by_price_category = {"<1000€": 5103, "<5000€": 111614, "<10000€": 92817, ">20000€": 267340}
-    new_vs_returning = {"New Clients": 84.17, "Returning Clients": 15.83}
-    revenue_by_client_type = {"New Clients": 106592, "Returning Clients": 370282}
-    
     # colorscale
     palette = px.colors.sequential.Blues_r
     palette_map = px.colors.sequential.Blues
 
     # Donut Chart: Breakdown of orders by price category
     breakdown_fig = px.pie(
-        names=list(revenue_by_price_category.keys()),
-        values=list(revenue_by_price_category.values()),
+        names=revenue_by_price_category['revenue_category'],
+        values=revenue_by_price_category['count'],
         title="Orders by Price Category",
         color_discrete_sequence=palette
     )
@@ -368,10 +363,10 @@ def dashboard_view(request):
 
     # Bar Chart: Revenue by Price Category
     revenue_price_fig = px.bar(
-        x=list(revenue_by_price_category.keys()),
-        y=list(revenue_by_price_category.values()),
+        x=revenue_by_price_category['revenue_category'],
+        y=revenue_by_price_category['revenue'].round().astype(int),
         title="Revenue by Price Category",
-        text=list(revenue_by_price_category.values()),
+        text=revenue_by_price_category['revenue'],
         labels={"x": "Price Category", "y": "Revenue (€)"},
         color_discrete_sequence=palette
     )
@@ -386,8 +381,8 @@ def dashboard_view(request):
 
     # Pie Chart: New vs Returning Clients
     client_type_fig = px.pie(
-        names=list(new_vs_returning.keys()),
-        values=list(new_vs_returning.values()),
+        names=revenue_by_isnew['category'],
+        values=revenue_by_isnew['count'],
         title="New vs Returning Clients",
         color_discrete_sequence=palette
     )
@@ -401,10 +396,10 @@ def dashboard_view(request):
 
     # Bar Chart: Revenue by Client Type
     revenue_client_fig = px.bar(
-        x=list(revenue_by_client_type.keys()),
-        y=list(revenue_by_client_type.values()),
+        x=revenue_by_isnew['category'],
+        y=revenue_by_isnew['revenue'].round().astype(int),
         title="Revenue by Client Type",
-        text=list(revenue_by_client_type.values()),
+        text=revenue_by_isnew['revenue'],
         labels={"x": "Client Type", "y": "Revenue (€)"},
         color_discrete_sequence=palette
     )
@@ -419,8 +414,8 @@ def dashboard_view(request):
 
     # Line Chart: Revenue over Time
     time_series_fig = px.line(
-        x=time_series["dates"],
-        y=time_series["revenue"],
+        x=revenue_by_date['date'],
+        y=revenue_by_date['revenue'].round().astype(int),
         title="Revenue Over Time",
         labels={"x": "Date", "y": "Revenue (€)"},
         color_discrete_sequence=palette
@@ -434,21 +429,27 @@ def dashboard_view(request):
     xaxis_title=None
 )  # Réduction des marges pour éviter le débordement
 
-    map_fig = go.Figure(go.Choroplethmapbox(
-        geojson=geojson_data,
-        locations=df['ISO3'],
-        z=df['revenue'],
-        colorscale=palette_map,
-        marker_line_width=0.5,
-        marker_opacity=0.8,
-        colorbar=dict(title="Revenue (€)")
-    ))
+    #map_fig = go.Figure(go.Choroplethmapbox(
+    #    geojson=geojson_data,
+    #    locations=df['ISO3'],
+    #    z=df['revenue'],
+    #    colorscale=palette_map,
+    #    marker_line_width=0.5,
+    #    marker_opacity=0.8,
+    #    colorbar=dict(title="Revenue (€)")
+    #))
+
+    map_fig = px.choropleth(revenue_by_country, locationmode='country names', locations='country', 
+            color=revenue_by_country['revenue'], color_continuous_scale=palette_map, 
+            hover_name='country', hover_data={'revenue':':,.0f'},
+            title='Revenue by Country')
+
 
     map_fig.update_layout(
         autosize=True,
         mapbox_style="carto-positron",   # Style de la carte
-        mapbox_zoom=2.5,                  # Zoom initial
-        mapbox_center={"lat": 50, "lon": 10},  # Centre de la carte
+        #mapbox_zoom=2.5,                  # Zoom initial
+        #mapbox_center={"lat": 50, "lon": 10},  # Centre de la carte
         title=dict(
             text="Revenue by country",  # Titre
             font=dict(size=14),                # Taille du titre
@@ -479,7 +480,6 @@ def dashboard_view(request):
         "dashboard.html",
         {
             "plots": plots,
-            "metrics": metrics,
-            "table": df.to_dict(orient="records"),
+            "metrics": metrics_v2,
         },
     )
