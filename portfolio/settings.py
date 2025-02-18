@@ -44,7 +44,9 @@ ALLOWED_HOSTS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://pierrentohsong.up.railway.app"
+    "https://pierrentohsong.up.railway.app",
+    "https://pierrensong.com",
+    "https://www.pierrensong.com"
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
