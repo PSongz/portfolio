@@ -37,7 +37,10 @@ else:
 
 ALLOWED_HOSTS = [
     "pierrentohsong.up.railway.app",
-    "127.0.0.1"
+    "127.0.0.1",
+    "pierrensong.com",
+    "www.pierrensong.com"
+    
 ]
 
 CSRF_TRUSTED_ORIGINS = [
