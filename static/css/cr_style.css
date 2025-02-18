@@ -276,19 +276,24 @@ input, select {
     width: 100%;
 }
 
-/* Barre de progression */
+/* Conteneur de la barre de progression */
 .progress-container {
     width: 100%; /* Largeur de la barre */
-    max-width: 500px; /* Limite maximale pour éviter un étirement excessif */
+    max-width: 500px; /* Limite maximale */
     height: 20px; /* Hauteur de la barre */
-    background-color: #e0e0e0; /* Couleur de fond */
+    background-color: #e0e0e0; /* Fond */
     border-radius: 10px; /* Coins arrondis */
-    overflow: hidden; /* Empêche le débordement */
+    overflow: hidden; /* Cache le débordement */
+    display: flex; /* Active le modèle de boîte flexible */
+    align-items: center; /* Centre verticalement la barre */
 }
 
+/* Barre de progression */
 .progress-bar {
-    height: 100%; /* Remplit la hauteur du conteneur */
-    background-color: green; /* Couleur initiale */
-    width: 0%; /* Remplit progressivement en fonction de la probabilité */
-    transition: width 0.3s ease, background-color 0.3s ease; /* Transition douce */
+    /*flex-grow: 1; /* Remplit l'espace disponible horizontalement */
+    height: 100%; /* Prend toute la hauteur du conteneur */
+    width: 0%; /* Commence à zéro */
+    background-color: green;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 10px; /* Coins arrondis alignés avec le conteneur */
 }

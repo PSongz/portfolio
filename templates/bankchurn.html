@@ -254,5 +254,10 @@
         <script src="{% static 'js/cr_viewselector.js' %}"></script>
         <script src="{% static 'js/cr_getdata.js' %}"></script>
         <script src="{% static 'js/cr_progressbar.js' %}"></script>
+        <script> // Lancer le calcul au chargement de la page
+            window.addEventListener('DOMContentLoaded', (event) => {
+                sendData();
+            });
+        </script>
     </body>
 </html>   
